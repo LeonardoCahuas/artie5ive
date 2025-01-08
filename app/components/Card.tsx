@@ -8,31 +8,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cartLinesAdd as addToShopifyCart, cartCreate } from "@/lib/shopify";
 import { Product } from "../page";
 
-interface Variant{
+interface Variant {
   id: string
   size: string
   available: boolean
 }
 
-function ProductCard({ product, variant }: { product: CartItem | Product, variant: 'default' | 'background' }) {
+function ProductCard({ product, variant }: { product: Product | CartItem, variant: 'default' | 'background' }) {
   const { addItem } = useCart();
   const availableVariants = product.variants.filter((variant: { available: boolean; }) => variant.available)
-  const [selectedVariant, setSelectedVariant] = useState(availableVariants[0] || { id: '', size: '' });
+  const [selectedVariant, setSelectedVariant] = useState(availableVariants[0]?.id || '');
   const [currentImage, setCurrentImage] = useState(0)
-  const { checkoutId, setCheckoutId } = useCart();
+  const { checkoutId, setCheckoutId } = useCart()
 
   const addToCart = async () => {
     if (checkoutId) {
       if (selectedVariant) {
-        const resp = await addToShopifyCart(checkoutId, [{ merchandiseId: selectedVariant.id, quantity: 1 }])
+        const selVar = product.variants.find((v: { id: string;size:string }) => v.id == selectedVariant)
+        const resp = await addToShopifyCart(checkoutId, [{ merchandiseId: selVar.id, quantity: 1 }])
         const lineId = resp.data.cartLinesAdd.cart.lines.edges[0].node.id;
 
         addItem({
           id: product.id,
-          variantId: selectedVariant.id,
+          variantId: selVar.id,
           name: product.name,
           price: product.price,
-          size: selectedVariant.size,
+          size: selVar.size,
           images: product.images,
           quantity: 1,
           lineId: lineId,
@@ -54,10 +55,10 @@ function ProductCard({ product, variant }: { product: CartItem | Product, varian
 
   return (
     <div className="flex flex-col items-center">
-      
+
       {variant === 'background' ? (
         <div className="relative w-full aspect-[2/3] max-w-[300px]">
-          { (availableVariants.length < 1 || !selectedVariant.id) && <p className="bg-red-600 rounded-sm px-1">Sold out</p>}
+          {(availableVariants.length < 1 || !selectedVariant.id) && <p className="bg-red-600 rounded-sm px-1">Sold out</p>}
           <Link href={`/${extractProductId(product.id)}`}><Card className="overflow-hidden bg-transparent border-none h-full" style={{ backgroundImage: `url(${product.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             {/* Contenuto della card è ora vuoto */}
           </Card></Link>
@@ -66,7 +67,7 @@ function ProductCard({ product, variant }: { product: CartItem | Product, varian
             <p className="text-xl text-white font-light mb-4">€{product.price.toFixed(2)}</p>
             <Button
               className="bg-[#c1272d] hover:bg-red-700"
-              disabled={availableVariants.length < 1 || !selectedVariant.id}
+              disabled={availableVariants.length < 1 || !selectedVariant}
               onClick={() => {
                 if (selectedVariant) {
                   addToCart();
@@ -121,12 +122,8 @@ function ProductCard({ product, variant }: { product: CartItem | Product, varian
                   ) : null}
                   <Button
                     className="bg-[#c1272d] hover:bg-red-700"
-                    disabled={availableVariants.length < 1 || !selectedVariant.id}
-                    onClick={() => {
-                      if (selectedVariant  ) {
-                        addToCart();
-                      }
-                    }}
+                    disabled={availableVariants.length < 1 || !selectedVariant}
+                    onClick={addToCart}
                   >
                     Aggiungi
                   </Button>

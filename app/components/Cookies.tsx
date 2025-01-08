@@ -35,8 +35,8 @@ export default function CookiePolicy() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 w-full h-full">
-      <div className="bg-white rounded-lg p-6 w-full">
-        <h2 className="text-2xl font-bold mb-4">Politica sui Cookie</h2>
+<div className="bg-white rounded-lg p-6 w-full max-h-full overflow-y-auto">
+<h2 className="text-2xl font-bold mb-4">Politica sui Cookie</h2>
         <p className="mb-6 text-gray-600 text-sm">
           Questo sito utilizza cookie per migliorare l&apos;esperienza utente. I cookie essenziali sono necessari per il funzionamento del sito. 
           Non raccogliamo, utilizziamo o condividiamo dati personali degli utenti, a meno che l&apos;utente non fornisca volontariamente tali dati, ad esempio:
@@ -91,7 +91,7 @@ export default function CookiePolicy() {
           </label>
         </div>
 
-        <div className="flex justify-between mt-6">
+        <div className="flex justify-between mt-6 gap-2">
           <button 
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors text-sm"
             onClick={handleReject}

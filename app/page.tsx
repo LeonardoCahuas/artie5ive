@@ -155,6 +155,7 @@ export default function Home() {
         <ScrollSection
           backgroundImage="/bgimage1.png"
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
+          backgroundClass="bg-cover bg-center"
         >
           <div className="container w-full lg:w-[60%] px-4 py-24">
             <motion.h2
@@ -184,6 +185,7 @@ export default function Home() {
         <ScrollSection
           backgroundImage="/bgimage2.png"
           className="min-h-screen bg-black/50 h-full"
+          backgroundClass="bg-cover bg-center"
         >
           <div className="container mx-auto py-16 h-full">
             <motion.h2
@@ -202,6 +204,7 @@ export default function Home() {
         <ScrollSection
           backgroundImage="/bgimage3.png"
           className="min-h-screen bg-black/50 w-full pb-36"
+          backgroundClass="bg-cover bg-center"
         >
           <div className="container mx-auto px-4 py-16">
             <motion.h2
@@ -243,132 +246,5 @@ export default function Home() {
     </main>
   )
 }
-
-
-/* 
-  <main className="relative bruno-ace-regular">
-      <div className="relative w-full">
-       {/*  <ScrollSection
-          backgroundImage="/bgimage1.png"
-          className="min-h-screen bg-black/50 w-full flex flex-col"
-        >
-          <div className="flex flex-col justify-end flex-1 p-8"> 
-            <div className="flex flex-row justify-between items-end">
-              <div className="flex flex-col justify-between items-start">
-                <div className="flex items-center">
-                  <Music className="text-white text-4xl" />
-                </div>
-                <span className="text-white text-4xl">Stream Now →</span>
-              </div>
-              <div className="text-center flex flex-col items-end">
-                <div className="grid grid-cols-2 gap-2 w-fit"> 
-                  <div className="flex justify-center">
-                    <Instagram className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Facebook className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Youtube className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Twitter className="text-white w-8 h-8" />
-                  </div>
-                </div>
-                <span className="text-white text-3xl">Seguici sui social</span>
-              </div>
-            </div>
-          </div>
-        </ScrollSection> 
-
-        <ScrollSection
-          backgroundImage="/bgimage1.png"
-          className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
-        >
-          <div className="container w-full lg:w-[60%] px-4 py-24">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white mb-8 w-full text-center"
-            >
-              MERCH
-            </motion.h2>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 mx-auto">
-              {products.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="my-12"
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <BottomBadge />
-        </ScrollSection>
-
-        <ScrollSection
-          backgroundImage="/bgimage2.png"
-          className="min-h-screen bg-black/50 h-full"
-        >
-          <div className="container mx-auto py-16 h-full">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white text-center mb-16"
-            >
-              GALLERY
-            </motion.h2>
-            <PhotoGallery />
-            <AlternatingCards products={products.slice(1)}/>
-          </div>
-          <BottomBadge />
-        </ScrollSection>
-
-        <ScrollSection
-          backgroundImage="/bgimage3.png"
-          className="min-h-screen bg-black/50 w-full pb-36"
-        >
-          <div className="container mx-auto px-4 py-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white mb-12 text-center"
-            >
-              5IVE MOMENTS
-            </motion.h2>
-            <motion.div
-              key={vlogVideos[0].id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0 * 0.1 }}
-              className="mb-6"
-            >
-              <VideoCard isSmall={false} video={vlogVideos[0]} />
-            </motion.div>
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {vlogVideos.slice(1).map((video, index) => (
-                <motion.div
-                  key={video.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <VideoCard isSmall video={video} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <BottomBadge />
-          </div>
-        </ScrollSection>
-
-        <Footer />
-      </div>
-    </main> */
 
 
