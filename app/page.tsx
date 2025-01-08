@@ -1,54 +1,82 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { ProductCard } from "./components/Card"
+import ProductCard from "./components/Card"
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
-import img1 from '../public/barca.png'
-import img2 from '../public/barcaback.png'
-import img3 from '../public/real.png'
-import img4 from '../public/realback.png'
+import { getCollections } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
+import AlternatingCards from "./components/Cards"
+import { PhotoGallery } from "./components/PhotoGallery"
+import { useCart } from "@/hooks/useCart"
+import { Metadata } from "next"
 
-// Mock products data
-const products = [
-  {
-    id: "1",
-    name: "T-Shirt Trap Nation",
-    price: 39.99,
-    images: [img1, img2],
-    sizes: ["S", "M", "L", "XL"]
+const metadata: Metadata = {
+  title: {
+    default: 'Artie 5ive | Starsnation',
+    template: '%s | Artie 5ive'
   },
-  {
-    id: "2",
-    name: "T-Shirt Trap Nation",
-    price: 39.99,
-    images: [img3, img4],
-    sizes: ["S", "M", "L", "XL"]
+  description: 'Artie 5ive, rapper italiano firmato con Trenches Records Entertainment. Scopri la sua musica, i suoi ultimi singoli e album.',
+  keywords: ['Artie 5ive', 'rapper italiano', 'Trenches Records', 'hip hop italiano', 'rap italiano', 'musica italiana'],
+  authors: [{ name: 'Artie 5ive' }],
+  creator: 'Artie 5ive',
+  publisher: 'Trenches Records Entertainment',
+  openGraph: {
+    type: 'website',
+    locale: 'it_IT',
+    url: 'https://starsnation.it',
+    siteName: 'Artie 5ive Official Website',
+    title: 'Artie 5ive | Rapper Italiano | Trenches Records',
+    description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
+    images: [
+      {
+        url: '/Logo artie.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Artie 5ive',
+      }
+    ],
   },
-  {
-    id: "3",
-    name: "T-Shirt Trap Nation",
-    price: 39.99,
-    images: [img3, img4],
-    sizes: ["S", "M", "L", "XL"]
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Artie 5ive | Rapper Italiano',
+    description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
+    images: ['//Logo artie.svg'],
   },
-  {
-    id: "4",
-    name: "T-Shirt Trap Nation",
-    price: 39.99,
-    images: [img1, img2],
-    sizes: ["S", "M", "L", "XL"]
-  }
-]
+  icons: {
+    icon: '/Logo artie.svg',
+    shortcut: '/Logo artie.svg',
+    apple: '/',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/Logo artie.svg',
+    },
+  },
+  manifest: '/site.webmanifest',
+  category: 'music',
+}
 
-// YouTube video IDs
-const featuredVideos = [
-  { id: "1", videoId: "WTdrxp7B1q4", title: "5IVE MOMENTS EP.05" },
-  { id: "2", videoId: "XcyPopxjyyM", title: "5IVE MOMENTS EP.04" },
-]
+if(metadata){}
+
+interface Variant {
+  id: string;
+  size: string;
+  available: boolean;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  images: string[];
+  variants: Variant[];
+  sizes: string[]
+}
+
+
+
 
 const vlogVideos = [
   { id: "1", videoId: "WTdrxp7B1q4", title: "5IVE MOMENTS EP.05" },
@@ -59,67 +87,71 @@ const vlogVideos = [
 ]
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState(0)
-  const sectionRefs = useRef([])
+  const { setProducts } = useCart()
+  const [collA, setCollA] = useState<Product[]>([])
+  const [collB, setCollB] = useState<Product[]>([])
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      const windowHeight = window.innerHeight
+    const fetchProducts = async () => {
+      const response = await getCollections();
+      if (response.data.collections.edges.length > 0) {
+        const collections = response.data.collections.edges;
 
-      sectionRefs.current.forEach((ref, index) => {
-        if (ref) {
-          const { offsetTop, offsetHeight } = ref
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(index)
-          }
+        // Assicurati che ci siano almeno due collezioni
+        if (collections.length >= 2) {
+          const firstCollection = collections[0].node;
+          const secondCollection = collections[1].node;
+          const collectionA = firstCollection.products.edges.map((edge: { node: { id: string; title: string; variants: { edges: {node:{id:string;title: string;availableForSale: boolean}}[] }; images: { edges: {node:{src:string}}[] }; priceRange: { minVariantPrice: { amount: string } } } }) => ({
+            id: edge.node.id,
+            name: edge.node.title,
+            variants: edge.node.variants.edges.map(variant => {
+              return ({
+                id: variant.node.id,
+                size: variant.node.title,
+                available: variant.node.availableForSale,
+              })
+            }),
+            images: edge.node.images.edges.map(image => image.node.src),
+            price: parseFloat(edge.node.priceRange.minVariantPrice.amount),
+          }))
+
+          const collectionB = secondCollection.products.edges.map((edge: { node: { id: string; title: string; priceRange: { minVariantPrice: { amount: string } }; variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] }; images: { edges: {node:{src:string}}[] } } }) => ({
+            id: edge.node.id,
+            name: edge.node.title,
+            price: parseFloat(edge.node.priceRange.minVariantPrice.amount),
+            variants: edge.node.variants.edges.map((variant: { node: { id: string; title: string; availableForSale: boolean } }) => ({
+              id: variant.node.id,
+              size: variant.node.title,
+              available: variant.node.availableForSale,
+            })),
+            images: edge.node.images.edges.map(image => image.node.src),
+          }))
+          setCollA(collectionA);
+          setCollB(collectionB);
         }
-      })
-    }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+        const allProducts = collections.flatMap((collection: { node: { products: { edges: {node: {variants:{edges:{ node: { id: string; title: string; availableForSale: boolean } }[]};images:{edges:{ node: { src: string }}[]}; id:string;title:string; priceRange:{minVariantPrice:{amount:string}}}}[] } } }) =>
+          collection.node.products.edges.map(edge => ({
+            id: edge.node.id,
+            name: edge.node.title,
+            price: parseFloat(edge.node.priceRange.minVariantPrice.amount),
+            images: edge.node.images.edges.map((image: { node: { src: string } }) => image.node.src),
+            variants: edge.node.variants.edges.map((variant: { node: { id: string; title: string; availableForSale: boolean } }) => ({
+              id: variant.node.id,
+              size: variant.node.title,
+              available: variant.node.availableForSale,
+            })),
+          }))
+        );
+        setProducts(allProducts);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <main className="relative bruno-ace-regular">
       <div className="relative w-full">
-       {/*  <ScrollSection
-          backgroundImage="/bgimage1.png"
-          className="min-h-screen bg-black/50 w-full flex flex-col"
-        >
-          <div className="flex flex-col justify-end flex-1 p-8"> 
-            <div className="flex flex-row justify-between items-end">
-              <div className="flex flex-col justify-between items-start">
-                <div className="flex items-center">
-                  <Music className="text-white text-4xl" />
-                </div>
-                <span className="text-white text-4xl">Stream Now →</span>
-              </div>
-              <div className="text-center flex flex-col items-end">
-                <div className="grid grid-cols-2 gap-2 w-fit"> 
-                  <div className="flex justify-center">
-                    <Instagram className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Facebook className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Youtube className="text-white w-8 h-8" />
-                  </div>
-                  <div className="flex justify-center">
-                    <Twitter className="text-white w-8 h-8" />
-                  </div>
-                </div>
-                <span className="text-white text-3xl">Seguici sui social</span>
-              </div>
-            </div>
-          </div>
-        </ScrollSection> */}
-
         <ScrollSection
           backgroundImage="/bgimage1.png"
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
@@ -133,7 +165,7 @@ export default function Home() {
               MERCH
             </motion.h2>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 mx-auto">
-              {products.map((product, index) => (
+              {collA.map((product, index) => (
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -141,7 +173,7 @@ export default function Home() {
                   transition={{ delay: index * 0.1 }}
                   className="my-12"
                 >
-                  <ProductCard product={product} />
+                  <ProductCard product={product} variant="default" />
                 </motion.div>
               ))}
             </div>
@@ -153,27 +185,16 @@ export default function Home() {
           backgroundImage="/bgimage2.png"
           className="min-h-screen bg-black/50 h-full"
         >
-          <div className="container mx-auto px-4 py-16 h-full">
+          <div className="container mx-auto py-16 h-full">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white text-center"
+              className="text-5xl font-bold text-white text-center mb-16"
             >
-              FEATURED VIDEOS
+              GALLERY
             </motion.h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {featuredVideos.map((video, index) => (
-                <motion.div
-                  key={video.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={index === 0 ? "lg:col-span-2" : ""}
-                >
-                  <VideoCard video={video} />
-                </motion.div>
-              ))}
-            </div>
+            <PhotoGallery />
+            <AlternatingCards products={collB} />
           </div>
           <BottomBadge />
         </ScrollSection>
@@ -222,4 +243,132 @@ export default function Home() {
     </main>
   )
 }
+
+
+/* 
+  <main className="relative bruno-ace-regular">
+      <div className="relative w-full">
+       {/*  <ScrollSection
+          backgroundImage="/bgimage1.png"
+          className="min-h-screen bg-black/50 w-full flex flex-col"
+        >
+          <div className="flex flex-col justify-end flex-1 p-8"> 
+            <div className="flex flex-row justify-between items-end">
+              <div className="flex flex-col justify-between items-start">
+                <div className="flex items-center">
+                  <Music className="text-white text-4xl" />
+                </div>
+                <span className="text-white text-4xl">Stream Now →</span>
+              </div>
+              <div className="text-center flex flex-col items-end">
+                <div className="grid grid-cols-2 gap-2 w-fit"> 
+                  <div className="flex justify-center">
+                    <Instagram className="text-white w-8 h-8" />
+                  </div>
+                  <div className="flex justify-center">
+                    <Facebook className="text-white w-8 h-8" />
+                  </div>
+                  <div className="flex justify-center">
+                    <Youtube className="text-white w-8 h-8" />
+                  </div>
+                  <div className="flex justify-center">
+                    <Twitter className="text-white w-8 h-8" />
+                  </div>
+                </div>
+                <span className="text-white text-3xl">Seguici sui social</span>
+              </div>
+            </div>
+          </div>
+        </ScrollSection> 
+
+        <ScrollSection
+          backgroundImage="/bgimage1.png"
+          className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
+        >
+          <div className="container w-full lg:w-[60%] px-4 py-24">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl font-bold text-white mb-8 w-full text-center"
+            >
+              MERCH
+            </motion.h2>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 mx-auto">
+              {products.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="my-12"
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          <BottomBadge />
+        </ScrollSection>
+
+        <ScrollSection
+          backgroundImage="/bgimage2.png"
+          className="min-h-screen bg-black/50 h-full"
+        >
+          <div className="container mx-auto py-16 h-full">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl font-bold text-white text-center mb-16"
+            >
+              GALLERY
+            </motion.h2>
+            <PhotoGallery />
+            <AlternatingCards products={products.slice(1)}/>
+          </div>
+          <BottomBadge />
+        </ScrollSection>
+
+        <ScrollSection
+          backgroundImage="/bgimage3.png"
+          className="min-h-screen bg-black/50 w-full pb-36"
+        >
+          <div className="container mx-auto px-4 py-16">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl font-bold text-white mb-12 text-center"
+            >
+              5IVE MOMENTS
+            </motion.h2>
+            <motion.div
+              key={vlogVideos[0].id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0 * 0.1 }}
+              className="mb-6"
+            >
+              <VideoCard isSmall={false} video={vlogVideos[0]} />
+            </motion.div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {vlogVideos.slice(1).map((video, index) => (
+                <motion.div
+                  key={video.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <VideoCard isSmall video={video} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <BottomBadge />
+          </div>
+        </ScrollSection>
+
+        <Footer />
+      </div>
+    </main> */
+
 

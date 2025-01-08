@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold">Introduzione</h2>
           <p>
-            Benvenuto nell'Informativa sulla Privacy di Trenches Records Entertainment. Come azienda di abbigliamento a Milano, ci impegniamo a proteggere la tua privacy in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR).
+            Benvenuto nell&apos;Informativa sulla Privacy di Trenches Records Entertainment. Come azienda di abbigliamento a Milano, ci impegniamo a proteggere la tua privacy in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR).
           </p>
 
           <h2 className="text-2xl font-semibold">1. Titolare del Trattamento</h2>
@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
               <strong>Informazioni che Fornisci:</strong> Queste includono dettagli come il tuo nome e le informazioni di contatto quando acquisti i nostri prodotti o interagisci con i nostri servizi.
             </li>
             <li>
-              <strong>Informazioni Raccolte Automaticamente:</strong> Raccogliamo dati come l'attività di navigazione e le preferenze per personalizzare la nostra pubblicità.
+              <strong>Informazioni Raccolte Automaticamente:</strong> Raccogliamo dati come l&apos;attività di navigazione e le preferenze per personalizzare la nostra pubblicità.
             </li>
           </ul>
 
@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
 
           <h2 className="text-2xl font-semibold">12. Contattaci</h2>
           <p>
-            Per domande riguardanti questa politica, contattaci all'indirizzo <a href="mailto:info@starsnation.it" className="text-blue-400">info@starsnation.it</a>.
+            Per domande riguardanti questa politica, contattaci all&apos;indirizzo <a href="mailto:info@starsnation.it" className="text-blue-400">info@starsnation.it</a>.
           </p>
         </section>
       </div>

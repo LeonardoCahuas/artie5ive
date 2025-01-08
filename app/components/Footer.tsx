@@ -1,16 +1,35 @@
-import { useState } from 'react'
+'use client'
+
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronRight, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
 export function Footer() {
-  const [email, setEmail] = useState('')
+  const [isPending, setIsPending] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle newsletter signup logic here
-    console.log('Signed up with email:', email)
-    setEmail('')
+  async function handleSubmit(formData: FormData) {
+    setIsPending(true)
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        body: formData
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        alert(result.message)
+        formRef.current?.reset()
+      } else {
+        alert(result.message)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsPending(false)
+    }
   }
 
   return (
@@ -24,20 +43,23 @@ export function Footer() {
           >
             <h2 className="text-2xl font-bold mb-4">UNISCITI A 5IVE STARS NATION</h2>
             <p className="text-MEDIUM mb-8">ISCRIVITI ALLA NOSTRA NEWSLETTER PER RIMANERE SEMPRE AGGIORNATO!</p>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
+            <form ref={formRef} onSubmit={async (e) => {
+              e.preventDefault()
+              await handleSubmit(new FormData(e.currentTarget))
+            }} className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
+                name="email"
                 placeholder="Inserisici la tua mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="flex-grow py-3 px-4 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-white"
                 required
               />
               <button
                 type="submit"
-                className="bg-white text-[#c1272d] py-3 px-8 rounded-full font-semibold flex items-center justify-center hover:bg-opacity-90 transition-colors text-sm"
+                disabled={isPending}
+                className="bg-white text-[#c1272d] py-3 px-8 rounded-full font-semibold flex items-center justify-center hover:bg-opacity-90 transition-colors text-sm disabled:opacity-50"
               >
-                ISCRIVITI <ChevronRight className="ml-2" />
+                {isPending ? 'INVIO...' : 'ISCRIVITI'} <ChevronRight className="ml-2" />
               </button>
             </form>
           </motion.div>
@@ -48,27 +70,22 @@ export function Footer() {
           <div className="md:col-span-2">
             <h3 className="text-2xl font-bold mb-4">5IVE STARS NATION</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook />
+              <a href="https://www.instagram.com/artie5ive/" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                <i className="fa-brands fa-instagram text-2xl" ></i>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter />
+              <a href="https://www.youtube.com/channel/UC-xCxVgJcaeTk__KaFpPwwQ" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                <i className="fa-brands fa-youtube text-2xl" ></i>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Instagram />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Youtube />
+              <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjR3IfM8uWKAxXV0QIHHTiTEVwQFnoECBwQAQ&url=https%3A%2F%2Fwww.tiktok.com%2F%40artiestar%3Flang%3Dit-IT&usg=AOvVaw1vYRecEH9WQ14fgoKM4k03&opi=89978449" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                <i className="fa-brands fa-tiktok text-2xl" ></i>
               </a>
             </div>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-semibold mb-4">LEGAL</h4>
             <ul className="space-y-2">
               <Link href="/privacy"><p className="text-gray-400 hover:text-white transition-colors">PRIVACY POLICY</p></Link>
-              {/* <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Cookie Policy</a></li> */}
             </ul>
           </div>
         </div>
