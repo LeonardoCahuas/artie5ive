@@ -187,7 +187,7 @@ export default function Home() {
           className="min-h-screen bg-black/50 h-full"
           backgroundClass="bg-cover bg-center"
         >
-          <div className="container mx-auto py-16 h-full">
+          <div className="container mx-auto py-36 h-full">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

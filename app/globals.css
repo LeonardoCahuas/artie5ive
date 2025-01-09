@@ -93,3 +93,40 @@ body {
   }
 }
 
+ù.parallax-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.parallax-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* Safari-specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    background-attachment: scroll;
+    /* Slightly larger to prevent white edges */
+    height: 101vh;
+    width: 101%;
+  }
+  /* Non-Safari browsers */
+  @supports not (-webkit-touch-callout: none) {
+    background-attachment: fixed;
+  }
+}
+
+.parallax-content {
+  position: relative;
+  height: 100%;
+  z-index: 1;
+}
