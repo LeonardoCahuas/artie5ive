@@ -58,7 +58,7 @@ function ProductCard({ product, variant }: { product: Product | CartItem, varian
 
       {variant === 'background' ? (
         <div className="relative w-full aspect-[2/3] max-w-[300px]">
-          {(availableVariants.length < 1 || !selectedVariant.id) && <p className="bg-red-600 rounded-sm px-1">Sold out</p>}
+          {(availableVariants.length < 1 || !selectedVariant) && <p className="bg-red-600 rounded-sm px-1">Sold out</p>}
           <Link href={`/${extractProductId(product.id)}`}><Card className="overflow-hidden bg-transparent border-none h-full" style={{ backgroundImage: `url(${product.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             {/* Contenuto della card è ora vuoto */}
           </Card></Link>

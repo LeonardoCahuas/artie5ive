@@ -1,10 +1,5 @@
 "use client"
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Play } from 'lucide-react'
-import moments from '../../public/fivemoments.svg'
-import Image from 'next/image'
 
 interface Video {
     id: string
@@ -18,11 +13,6 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ video, isSmall }: VideoCardProps) {
-    const [isPlaying, setIsPlaying] = useState(false)
-
-    const handlePlay = () => {
-        setIsPlaying(true)
-    }
 
     return (
         <div>
@@ -38,9 +28,9 @@ export function VideoCard({ video, isSmall }: VideoCardProps) {
                     allowFullScreen
                 ></iframe>
 
-                {!isPlaying && !isSmall && <div className="absolute bottom-0 left-0 right-0 px-4 py-1 text-white text-center bg-black bg-opacity-50">
+                 <div className="absolute bottom-0 left-0 right-0 px-4 py-1 text-white text-center bg-black bg-opacity-50">
                     <h3 className="text-lg w-full text-left">{isSmall ? video.title.slice(12) : video.title}</h3> {/* Ripristina il titolo */}
-                </div>}
+                </div>
             </div>
             {isSmall && <div className="text-white text-center">
                 <h3 className="text-lg w-full text-left">{isSmall ? video.title.slice(12) : video.title}</h3> {/* Ripristina il titolo */}
