@@ -32,7 +32,7 @@ export function Navbar() {
   return (
     <div className={`d-flex flex-col fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur' : 'bg-transparent'}`}>
       <div className="flex flex-row justify-between space-x-4 bg-[#c1272d] py-1  px-4 sm:px-8">
-        <p className="text-white flex flex-col items-center justify-center">SOCIAL:</p>
+        <p className="text-white flex flex-col items-center justify-center"></p>
         <div className="flex flex-row gap-3 justify-end sm:justify-around m:flex-1">
           <a href="https://www.instagram.com/artie5ive/" target="_blank" className="text-gray-400 hover:text-white transition-colors">
             <i className="fa-brands fa-instagram text-white text-2xl" ></i>
@@ -46,11 +46,12 @@ export function Navbar() {
         </div>
       </div>
       <nav>
-        <div className="w-full px-4 sm:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-red-600">
-            <Image alt="Artie 5ive logo" src={logo} width={100} />
+        <div className="w-full px-4 sm:px-8 py-1 flex items-center justify-between">
+          <div className="w-1/4"></div>
+          <Link href="/" className="text-2xl font-bold text-red-600 w-1/2 flex flex-col items-center">
+            <Image alt="Artie 5ive logo" src={logo} width={150} />
           </Link>
-
+<div className="w-1/4 flex flex-col items-end">
           <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
             <SheetTrigger asChild>
               <Button size="icon" className="relative w-fit bg-transparent hover:bg-transparent">
@@ -67,6 +68,7 @@ export function Navbar() {
               <CartSidebar />
             </SheetContent>
           </Sheet>
+          </div>
         </div>
       </nav>
       <div className="px-6 pt-2">

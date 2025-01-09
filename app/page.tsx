@@ -12,6 +12,8 @@ import AlternatingCards from "./components/Cards"
 import { PhotoGallery } from "./components/PhotoGallery"
 import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
+import Image from "next/image"
+import moments from '../public/fivemoments.svg'
 
 const metadata: Metadata = {
   title: {
@@ -157,7 +159,7 @@ export default function Home() {
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
           backgroundClass="bg-cover bg-center"
         >
-          <div className="container w-full lg:w-[60%] px-4 py-24">
+          <div className="container w-full lg:w-[60%] px-4 py-36">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -193,7 +195,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               className="text-5xl font-bold text-white text-center mb-16"
             >
-              GALLERY
+              COLLAB STRIPS
             </motion.h2>
             <PhotoGallery />
             <AlternatingCards products={collB} />
@@ -210,9 +212,10 @@ export default function Home() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white mb-12 text-center"
+              className="text-5xl font-bold text-white mb-12 text-center flex flex-col items-center w-full bg-gradient-to-t from-white/50 to-white/10 rounded-lg p-3"
+
             >
-              5IVE MOMENTS
+              <Image src={moments} alt="%ive moments logo" width={350}/>
             </motion.h2>
             <motion.div
               key={vlogVideos[0].id}
