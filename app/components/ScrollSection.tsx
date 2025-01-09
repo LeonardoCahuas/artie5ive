@@ -1,5 +1,3 @@
-'use client'
-
 interface ScrollSectionProps {
   backgroundImage: string;
   className?: string;
@@ -7,22 +5,23 @@ interface ScrollSectionProps {
   backgroundClass?: string;
 }
 
-export function ScrollSection({ backgroundImage, className = "", children, backgroundClass = "" }: ScrollSectionProps) {
+export function ScrollSection({ 
+  backgroundImage, 
+  className = "", 
+  children, 
+  backgroundClass = "" 
+}: ScrollSectionProps) {
   return (
-    <div className="relative w-full h-full">
-      {/* Background image with conditional fixed positioning */}
+    <section className="scroll-section">
       <div 
-        className={`parallax-bg ${backgroundClass}`}
+        className={`scroll-section-bg ${backgroundClass}`}
         style={{
           backgroundImage: `url(${backgroundImage})`
         }}
       />
-      
-      {/* Overlay and content */}
-      <div className={`relative h-full ${className}`}>
+      <div className={`scroll-section-content ${className}`}>
         {children}
       </div>
-    </div>
+    </section>
   )
 }
-
