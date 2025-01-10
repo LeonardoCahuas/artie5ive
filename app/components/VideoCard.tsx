@@ -27,14 +27,10 @@ export function VideoCard({ video, isSmall }: VideoCardProps) {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 ></iframe>
-
-                 <div className="absolute bottom-0 left-0 right-0 px-4 py-1 text-white text-center bg-black bg-opacity-50">
-                    <h3 className="text-lg w-full text-left">{isSmall ? video.title.slice(12) : video.title}</h3> {/* Ripristina il titolo */}
-                </div>
             </div>
-            {isSmall && <div className="text-white text-center">
+           <div className="text-white text-center">
                 <h3 className="text-lg w-full text-left">{isSmall ? video.title.slice(12) : video.title}</h3> {/* Ripristina il titolo */}
-            </div>}
+            </div>
         </div>
     )
 }

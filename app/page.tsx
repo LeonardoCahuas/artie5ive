@@ -13,7 +13,7 @@ import { PhotoGallery } from "./components/PhotoGallery"
 import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
-import moments from '../public/fivemoments.svg'
+import moments from '../public/Logo 5ive moments.svg'
 
 const metadata: Metadata = {
   title: {
@@ -212,7 +212,7 @@ export default function Home() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white mb-12 text-center flex flex-col items-center w-full bg-gradient-to-t from-white/50 to-white/10 rounded-lg p-3"
+              className="text-5xl font-bold text-white mb-12 text-center flex flex-col items-center w-full p-3"
 
             >
               <Image src={moments} alt="%ive moments logo" width={350}/>
