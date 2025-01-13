@@ -154,7 +154,7 @@ export default function Home() {
   return (
     <main className="relative bruno-ace-regular">
       <div className="relative w-full">
-        <ScrollSection
+        {/*<ScrollSection
           backgroundImage="/bgimage1.png"
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
           backgroundClass="bg-cover bg-center"
@@ -201,11 +201,11 @@ export default function Home() {
             <AlternatingCards products={collB} />
           </div>
           <BottomBadge />
-        </ScrollSection>
+        </ScrollSection>*/}
 
         <ScrollSection
           backgroundImage="/bgimage3.png"
-          className="min-h-screen bg-black/50 w-full pb-36"
+          className="min-h-screen bg-black/50 w-full py-36"
           backgroundClass="bg-cover bg-center"
         >
           <div className="container mx-auto px-4 py-16">
