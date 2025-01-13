@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import ProductCard from "./components/Card"
+/* import ProductCard from "./components/Card" */
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
 import { getCollections } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
-import AlternatingCards from "./components/Cards"
-import { PhotoGallery } from "./components/PhotoGallery"
+/* import AlternatingCards from "./components/Cards"
+import { PhotoGallery } from "./components/PhotoGallery" */
 import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
@@ -92,7 +92,8 @@ export default function Home() {
   const { setProducts } = useCart()
   const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
-
+console.log(collA)
+console.log(collB)
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getCollections();
