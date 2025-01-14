@@ -79,9 +79,9 @@ function ProductCard({ product, variant }: { product: Product | CartItem, varian
           </CardContent>
         </div>
       ) : (
-        <Card className="group overflow-hidden bg-transparent border-none max-w-[300px]">
+        <Card className="group overflow-hidden bg-transparent border-none max-w-[300px] rounded">
           <CardContent className="p-0">
-            <Link href={`/${extractProductId(product.id)}`}>
+            <Link href={`/${extractProductId(product.id)}`} className="max-w-full">
               <div className="relative aspect-square">
                 <Image
                   src={product.images[currentImage]}
@@ -100,7 +100,7 @@ function ProductCard({ product, variant }: { product: Product | CartItem, varian
               </div>
             </Link>
             <div className="p-4 flex flex-col items-center">
-              <h3 className="font-bold text-lg mb-2 text-white text-center">{product.name.toUpperCase()}</h3>
+              <h3 className="font-bold text-base mb-2 text-white text-center overflow-hidden w-full">MALEDUCATA T-SHIRT BLACK</h3>
               <p className="text-xl text-white font-light mb-4">€{product.price.toFixed(2)}</p>
               {availableVariants.length === 0 ? (
                 <p className="text-red-500">Sold Out</p>

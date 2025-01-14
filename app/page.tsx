@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-/* import ProductCard from "./components/Card" */
+import ProductCard from "./components/Card"
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
 import { getCollections } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
-/* import AlternatingCards from "./components/Cards"
-import { PhotoGallery } from "./components/PhotoGallery" */
+import AlternatingCards from "./components/Cards"
+import { PhotoGallery } from "./components/PhotoGallery"
 import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
@@ -20,17 +20,17 @@ const metadata: Metadata = {
     default: 'Artie 5ive | Starsnation',
     template: '%s | Artie 5ive'
   },
-  description: 'Artie 5ive, rapper italiano firmato con Trenches Records Entertainment. Scopri la sua musica, i suoi ultimi singoli e album.',
-  keywords: ['Artie 5ive', 'rapper italiano', 'Trenches Records', 'hip hop italiano', 'rap italiano', 'musica italiana'],
+  description: 'Artie 5ive, rapper italiano firmato con 5STARSNATION. Scopri la sua musica, i suoi ultimi singoli e album.',
+  keywords: ['Artie 5ive', 'rapper italiano', '5STARSNATION', 'hip hop italiano', 'rap italiano', 'musica italiana'],
   authors: [{ name: 'Artie 5ive' }],
   creator: 'Artie 5ive',
-  publisher: 'Trenches Records Entertainment',
+  publisher: '5STARSNATION',
   openGraph: {
     type: 'website',
     locale: 'it_IT',
     url: 'https://starsnation.it',
     siteName: 'Artie 5ive Official Website',
-    title: 'Artie 5ive | Rapper Italiano | Trenches Records',
+    title: 'Artie 5ive | Rapper Italiano | 5STARSNATION',
     description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
     images: [
       {
@@ -92,8 +92,7 @@ export default function Home() {
   const { setProducts } = useCart()
   const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
-console.log(collA)
-console.log(collB)
+
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getCollections();
@@ -155,7 +154,7 @@ console.log(collB)
   return (
     <main className="relative bruno-ace-regular">
       <div className="relative w-full">
-        {/*<ScrollSection
+       {/*  <ScrollSection
           backgroundImage="/bgimage1.png"
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
           backgroundClass="bg-cover bg-center"
@@ -168,7 +167,7 @@ console.log(collB)
             >
               MERCH
             </motion.h2>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-4 mx-auto">
               {collA.map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -202,7 +201,7 @@ console.log(collB)
             <AlternatingCards products={collB} />
           </div>
           <BottomBadge />
-        </ScrollSection>*/}
+        </ScrollSection> */}
 
         <ScrollSection
           backgroundImage="/bgimage3.png"

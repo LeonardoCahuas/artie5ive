@@ -1,6 +1,6 @@
 "use client"
 
-import {   useState } from 'react'
+import {   useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { ArrowLeft, ShoppingCart } from 'lucide-react'
@@ -8,8 +8,9 @@ import Link from 'next/link'
 import { Footer } from '../components/Footer'
 import { useParams } from 'next/navigation'
 import { useCart } from '@/hooks/useCart'
-import { cartLinesAdd as addToShopifyCart, cartCreate } from "@/lib/shopify";
+import { cartLinesAdd as addToShopifyCart, cartCreate, getCollections } from "@/lib/shopify";
 import { Metadata } from 'next'
+import { Product } from '../page'
 
 // Metadata per SEO
 const metadata: Metadata = {
@@ -17,17 +18,17 @@ const metadata: Metadata = {
     default: 'Artie 5ive | Starsnation',
     template: '%s | Artie 5ive'
   },
-  description: 'Artie 5ive, rapper italiano firmato con Trenches Records Entertainment. Scopri la sua musica, i suoi ultimi singoli e album.',
-  keywords: ['Artie 5ive', 'rapper italiano', 'Trenches Records', 'hip hop italiano', 'rap italiano', 'musica italiana'],
+  description: 'Artie 5ive, rapper italiano firmato con 5STARSNATION. Scopri la sua musica, i suoi ultimi singoli e album.',
+  keywords: ['Artie 5ive', 'rapper italiano', '5STARSNATION', 'hip hop italiano', 'rap italiano', 'musica italiana'],
   authors: [{ name: 'Artie 5ive' }],
   creator: 'Artie 5ive',
-  publisher: 'Trenches Records Entertainment',
+  publisher: '5STARSNATION',
   openGraph: {
     type: 'website',
     locale: 'it_IT',
     url: 'https://starsnation.it',
     siteName: 'Artie 5ive Official Website',
-    title: 'Artie 5ive | Rapper Italiano | Trenches Records',
+    title: 'Artie 5ive | Rapper Italiano | 5STARSNATION',
     description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
     images: [
       {
@@ -62,8 +63,38 @@ if(metadata){}
 export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState(0)
   const { products, checkoutId, addItem, setCheckoutId } = useCart()
+  const [collA, setCollA] = useState<Product[]>([])
+  const [collB, setCollB] = useState<Product[]>([])
+  const [isTshirt, setIsTshirt] = useState(false)
   const params = useParams()
   const { product } = params
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getCollections();
+      if (response.data.collections.edges.length > 0) {
+        const collections = response.data.collections.edges;
+
+        // Assicurati che ci siano almeno due collezioni
+        if (collections.length >= 2) {
+          const firstCollection = collections[0].node;
+          const secondCollection = collections[1].node;
+          const collectionA = firstCollection.products.edges.map((edge: { node: { id: any } }) => edge.node.id,)
+
+          const collectionB = secondCollection.products.edges.map((edge: { node: { id: any } }) => edge.node.id,)
+
+          if (collectionA.some((str: string) => str.includes(product))) {
+            setIsTshirt(true)
+          } else if (collectionB.some((str: string) => str.includes(product))) {
+            setIsTshirt(false)
+          }
+        }
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  
 
   // Assicurati che product sia una stringa
   const productId = Array.isArray(product) ? product[0] : product;
@@ -195,20 +226,7 @@ export default function ProductPage() {
             <h2 className="text-xl font-semibold">Dettagli del Prodotto</h2>
             <p className="font-bold">Tempi spedizione: 10-15 giorni lavorativi</p>
             <p className="font-bold">Costo spedizione: 10€</p>
-            <p>
-              T-Shirt premium di Trap Nation in 100% cotone biologico, morbida e traspirante, ideale per ogni occasione.
-            </p>
-            <h3 className="text-lg font-semibold">Materiale & Cura</h3>
-            <ul className="list-disc list-inside">
-              <li>100% Cotone Biologico</li>
-              <li>Lavare in lavatrice a freddo</li>
-              <li>Asciugare a bassa temperatura</li>
-              <li>Non candeggiare</li>
-            </ul>
-            <h3 className="text-lg font-semibold">Guida alle Taglie</h3>
-            <p>
-              Vestibilità regolare. Se preferisci una vestibilità più ampia, ti consigliamo di scegliere una taglia in più.
-            </p>
+            {!isTshirt && <p className="font-bold">I cerottini sono spediti in scatole da 30.</p>}
           </motion.div>
         </div>
       </div>

@@ -12,17 +12,17 @@ export default function PrivacyPolicy() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-bold mb-8"
         >
-          Informativa sulla Privacy di Trenches Records Entertainment
+          Informativa sulla Privacy di 5STARSNATION
         </motion.h1>
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold">Introduzione</h2>
           <p>
-            Benvenuto nell&apos;Informativa sulla Privacy di Trenches Records Entertainment. Come azienda di abbigliamento a Milano, ci impegniamo a proteggere la tua privacy in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR).
+            Benvenuto nell&apos;Informativa sulla Privacy di 5STARSNATION. Come azienda di abbigliamento a Milano, ci impegniamo a proteggere la tua privacy in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR).
           </p>
 
           <h2 className="text-2xl font-semibold">1. Titolare del Trattamento</h2>
           <p>
-            Trenches Records Entertainment, con sede a Milano, è responsabile dei tuoi dati personali.
+            5STARSNATION, con sede a Milano, è responsabile dei tuoi dati personali.
           </p>
 
           <h2 className="text-2xl font-semibold">2. Dati Personali che Raccogliamo</h2>

@@ -19,17 +19,17 @@ export const metadata: Metadata = {
     default: 'Artie 5ive | Starsnation',
     template: '%s | Artie 5ive'
   },
-  description: 'Artie 5ive, rapper italiano firmato con Trenches Records Entertainment. Scopri la sua musica, i suoi ultimi singoli e album.',
-  keywords: ['Artie 5ive', 'rapper italiano', 'Trenches Records', 'hip hop italiano', 'rap italiano', 'musica italiana'],
+  description: 'Artie 5ive, rapper italiano firmato con 5STARSNATION. Scopri la sua musica, i suoi ultimi singoli e album.',
+  keywords: ['Artie 5ive', 'rapper italiano', '5STARSNATION', 'hip hop italiano', 'rap italiano', 'musica italiana'],
   authors: [{ name: 'Artie 5ive' }],
   creator: 'Artie 5ive',
-  publisher: 'Trenches Records Entertainment',
+  publisher: '5STARSNATION',
   openGraph: {
     type: 'website',
     locale: 'it_IT',
     url: 'https://starsnation.it',
     siteName: 'Artie 5ive Official Website',
-    title: 'Artie 5ive | Rapper Italiano | Trenches Records',
+    title: 'Artie 5ive | Rapper Italiano | 5STARSNATION',
     description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
     images: [
       {
