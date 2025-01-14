@@ -1,16 +1,16 @@
 "use client"
 
-/* import { useEffect, useState } from "react" */
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-/* import ProductCard from "./components/Card" */
+import ProductCard from "./components/Card"
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
-/* import { getCollections } from "@/lib/shopify" */
+import { getCollections } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
-/* import AlternatingCards from "./components/Cards"
-import { PhotoGallery } from "./components/PhotoGallery" */
-/* import { useCart } from "@/hooks/useCart" */
+import AlternatingCards from "./components/Cards"
+import { PhotoGallery } from "./components/PhotoGallery"
+import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
 import moments from '../public/Logo 5ive moments.svg'
@@ -20,17 +20,17 @@ const metadata: Metadata = {
     default: 'Artie 5ive | Starsnation',
     template: '%s | Artie 5ive'
   },
-  description: 'Artie 5ive, rapper italiano firmato con 5STARSNATION. Scopri la sua musica, i suoi ultimi singoli e album.',
-  keywords: ['Artie 5ive', 'rapper italiano', '5STARSNATION', 'hip hop italiano', 'rap italiano', 'musica italiana'],
+  description: 'Artie 5ive, rapper italiano firmato con Trenches Records Entertainment. Scopri la sua musica, i suoi ultimi singoli e album.',
+  keywords: ['Artie 5ive', 'rapper italiano', 'Trenches Records', 'hip hop italiano', 'rap italiano', 'musica italiana'],
   authors: [{ name: 'Artie 5ive' }],
   creator: 'Artie 5ive',
-  publisher: '5STARSNATION',
+  publisher: 'Trenches Records Entertainment',
   openGraph: {
     type: 'website',
     locale: 'it_IT',
     url: 'https://starsnation.it',
     siteName: 'Artie 5ive Official Website',
-    title: 'Artie 5ive | Rapper Italiano | 5STARSNATION',
+    title: 'Artie 5ive | Rapper Italiano | Trenches Records',
     description: 'Artie 5ive, rapper italiano dalla periferia di Milano. Scopri il suo nuovo merch, la sua musica, i suoi ultimi singoli e album.',
     images: [
       {
@@ -89,8 +89,8 @@ const vlogVideos = [
 ]
 
 export default function Home() {
-  //const { setProducts } = useCart()
-/*   const [collA, setCollA] = useState<Product[]>([])
+  const { setProducts } = useCart()
+  const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
 
   useEffect(() => {
@@ -149,12 +149,12 @@ export default function Home() {
       }
     };
     fetchProducts();
-  }, []); */
+  }, []);
 
   return (
     <main className="relative bruno-ace-regular">
       <div className="relative w-full">
-       {/*  <ScrollSection
+        <ScrollSection
           backgroundImage="/bgimage1.png"
           className="min-h-screen bg-black/50 w-full pt-12 flex flex-col items-center"
           backgroundClass="bg-cover bg-center"
@@ -201,11 +201,11 @@ export default function Home() {
             <AlternatingCards products={collB} />
           </div>
           <BottomBadge />
-        </ScrollSection> */}
+        </ScrollSection>
 
         <ScrollSection
           backgroundImage="/bgimage3.png"
-          className="min-h-screen bg-black/50 w-full py-36"
+          className="min-h-screen bg-black/50 w-full pb-36"
           backgroundClass="bg-cover bg-center"
         >
           <div className="container mx-auto px-4 py-16">

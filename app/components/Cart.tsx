@@ -36,6 +36,8 @@ export function CartSidebar() {
   // Function to proceed to checkout
   const handleCheckout = async () => {
     const cartDetails = await cartFetch(cartId);
+    
+    console.log(cartDetails)
     window.location.href = cartDetails.data.cart.checkoutUrl; // Redirect to checkout
   };
 
@@ -88,8 +90,13 @@ export function CartSidebar() {
       <div className="border-t border-gray-200 pt-4 mt-4 flex flex-col gap-3">
         <div className="flex justify-between mb-4">
           <span className="font-semibold">Totale</span>
-          <span className="font-semibold">€{totalPrice}</span>
+          <span className="font-semibold">€{totalPrice + 10}</span>
         </div>
+        <div className="flex justify-between mb-4">
+        <p>Spedizione: 15 giorni lavorativi</p>
+        <p>10€</p>
+        </div>
+        <p>la spedizione impieghera 10-15</p>
         <Button className="w-full bg-white text-red-600 border border-2 border-red-600 hover:bg-gray-100" onClick={handleClearCart}>
           Svuota Carrello
         </Button>

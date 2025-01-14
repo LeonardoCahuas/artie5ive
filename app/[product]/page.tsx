@@ -80,7 +80,7 @@ export default function ProductPage() {
           const firstCollection = collections[0].node;
           const secondCollection = collections[1].node;
           const collectionA = firstCollection.products.edges.map((edge: { node: { id: string } }) => edge.node.id,)
-console.log(collectionA[0])
+
           const collectionB = secondCollection.products.edges.map((edge: { node: { id: string } }) => edge.node.id,)
 
           if (collectionA.some((str: string) => typeof product == 'string' && str.includes(product))) {

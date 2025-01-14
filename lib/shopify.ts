@@ -245,6 +245,7 @@ export async function cartFetch(cartId: string) {
 
   const variables = { cartId };
   const response = await shopifyClient.post('', { query, variables });
+  console.log(response)
   return response.data;
 }
 
