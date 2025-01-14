@@ -100,7 +100,7 @@ function ProductCard({ product, variant }: { product: Product | CartItem, varian
               </div>
             </Link>
             <div className="p-4 flex flex-col items-center">
-              <h3 className="font-bold text-base mb-2 text-white text-center overflow-hidden w-full">MALEDUCATA T-SHIRT BLACK</h3>
+              <h3 className="font-bold text-base mb-2 text-white text-center overflow-hidden w-full">{product.name}</h3>
               <p className="text-xl text-white font-light mb-4">€{product.price.toFixed(2)}</p>
               {availableVariants.length === 0 ? (
                 <p className="text-red-500">Sold Out</p>
