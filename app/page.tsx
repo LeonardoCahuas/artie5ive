@@ -1,16 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+/* import { useEffect, useState } from "react" */
 import { motion } from "framer-motion"
-import ProductCard from "./components/Card"
+/* import ProductCard from "./components/Card" */
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
-import { getCollections } from "@/lib/shopify"
+/* import { getCollections } from "@/lib/shopify" */
 import BottomBadge from "./components/BootmBadge"
-import AlternatingCards from "./components/Cards"
-import { PhotoGallery } from "./components/PhotoGallery"
-import { useCart } from "@/hooks/useCart"
+/* import AlternatingCards from "./components/Cards"
+import { PhotoGallery } from "./components/PhotoGallery" */
+/* import { useCart } from "@/hooks/useCart" */
 import { Metadata } from "next"
 import Image from "next/image"
 import moments from '../public/Logo 5ive moments.svg'
@@ -89,8 +89,8 @@ const vlogVideos = [
 ]
 
 export default function Home() {
-  const { setProducts } = useCart()
-  const [collA, setCollA] = useState<Product[]>([])
+  //const { setProducts } = useCart()
+/*   const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
 
   useEffect(() => {
@@ -149,7 +149,7 @@ export default function Home() {
       }
     };
     fetchProducts();
-  }, []);
+  }, []); */
 
   return (
     <main className="relative bruno-ace-regular">

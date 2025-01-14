@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation'
 import { useCart } from '@/hooks/useCart'
 import { cartLinesAdd as addToShopifyCart, cartCreate, getCollections } from "@/lib/shopify";
 import { Metadata } from 'next'
-import { Product } from '../page'
+/* import { Product } from '../page' */
 
 // Metadata per SEO
 const metadata: Metadata = {
@@ -62,9 +62,9 @@ if(metadata){}
 
 export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState(0)
-  const { products, checkoutId, addItem, setCheckoutId } = useCart()
+  const { products, checkoutId, addItem, setCheckoutId } = useCart()/* 
   const [collA, setCollA] = useState<Product[]>([])
-  const [collB, setCollB] = useState<Product[]>([])
+  const [collB, setCollB] = useState<Product[]>([]) */
   const [isTshirt, setIsTshirt] = useState(false)
   const params = useParams()
   const { product } = params
@@ -79,13 +79,13 @@ export default function ProductPage() {
         if (collections.length >= 2) {
           const firstCollection = collections[0].node;
           const secondCollection = collections[1].node;
-          const collectionA = firstCollection.products.edges.map((edge: { node: { id: any } }) => edge.node.id,)
+          const collectionA = firstCollection.products.edges.map((edge: { node: { id: string } }) => edge.node.id,)
+console.log(collectionA[0])
+          const collectionB = secondCollection.products.edges.map((edge: { node: { id: string } }) => edge.node.id,)
 
-          const collectionB = secondCollection.products.edges.map((edge: { node: { id: any } }) => edge.node.id,)
-
-          if (collectionA.some((str: string) => str.includes(product))) {
+          if (collectionA.some((str: string) => typeof product == 'string' && str.includes(product))) {
             setIsTshirt(true)
-          } else if (collectionB.some((str: string) => str.includes(product))) {
+          } else if (collectionB.some((str: string) => typeof product == 'string' && str.includes(product))) {
             setIsTshirt(false)
           }
         }
