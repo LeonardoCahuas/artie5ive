@@ -224,7 +224,7 @@ export default function ProductPage() {
             className="space-y-4"
           >
             <h2 className="text-xl font-semibold">Dettagli del Prodotto</h2>
-            <p className="font-bold">Tempi spedizione: 10-15 giorni lavorativi</p>
+            <p className="font-bold">Tempi spedizione: {isTshirt ? '15' : '30'} giorni lavorativi</p>
             <p className="font-bold">Costo spedizione: 10€</p>
             {!isTshirt && <p className="font-bold">I cerottini sono spediti in scatole da 30.</p>}
           </motion.div>
