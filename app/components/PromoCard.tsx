@@ -10,38 +10,61 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cartLinesAdd as addToShopifyCart, cartCreate } from "@/lib/shopify"
 import type { Product } from "../page"
 
-interface Variant {
-  id: string
-  size: string
-  available: boolean
-}
-
 interface PromoProductCardProps {
   products: Product[]
   variant: "default" | "background"
 }
 
+// Mapping delle combinazioni di prodotti
+const PRODUCT_COMBINATIONS = {
+  BAMBOLA_BLACK_MALEDUCATA_BLACK: "9922998763786",
+  BAMBOLA_BLACK_MALEDUCATA_WHITE: "9923052110090",
+  BAMBOLA_WHITE_MALEDUCATA_BLACK: "9923051880714",
+  BAMBOLA_WHITE_MALEDUCATA_WHITE: "9922998108426",
+}
+
 function PromoProductCard({ products }: PromoProductCardProps) {
+  console.log(products)
   const { addItem } = useCart()
-  const [selectedColor, setSelectedColor] = useState<"black" | "white">("black")
+  const [bambolaColor, setBambolaColor] = useState<"black" | "white">("black")
+  const [maleducataColor, setMaleducataColor] = useState<"black" | "white">("black")
   const [selectedVariant, setSelectedVariant] = useState("")
   const [currentImage, setCurrentImage] = useState(0)
   const { checkoutId, setCheckoutId } = useCart()
 
-  const productBlack = products.find((p) => p.name.toLowerCase().includes("black"))
-  const productWhite = products.find((p) => p.name.toLowerCase().includes("white"))
-  const currentProduct = selectedColor === "black" ? productBlack : productWhite
+  // Trova il prodotto corrente basato sulla combinazione di colori
+  const getCurrentProductId = () => {
+    const key =
+      `BAMBOLA_${bambolaColor.toUpperCase()}_MALEDUCATA_${maleducataColor.toUpperCase()}` as keyof typeof PRODUCT_COMBINATIONS
+    return PRODUCT_COMBINATIONS[key]
+  }
 
-  const availableVariants = currentProduct
-    ? currentProduct.variants.filter((variant: { available: boolean }) => variant.available)
-    : []
+  const currentProduct = products.find((p) => p.id.includes(getCurrentProductId()))
 
-  // Imposta la prima variante quando cambia il colore o quando il componente viene montato
+  // Filtra le varianti disponibili in base ai colori selezionati
+  const getAvailableVariants = () => {
+    const currentProduct = products.find((p) => p.id.includes(getCurrentProductId()));
+    return currentProduct
+      ? currentProduct.variants.filter((variant: { available: boolean }) => variant.available)
+      : [];
+  };
+
+  const availableVariants = getAvailableVariants();
+
+  // Imposta la prima variante quando cambia uno dei colori
   useEffect(() => {
     if (availableVariants.length > 0) {
-      setSelectedVariant(availableVariants[0].id)
+      const firstAvailableVariant = availableVariants[0].id;
+      setSelectedVariant(firstAvailableVariant);
+    } else {
+      setSelectedVariant("");
     }
-  }, [selectedColor])
+  }, [bambolaColor, maleducataColor, products]);
+
+  // Aggiungi un useEffect per monitorare i cambiamenti di selectedVariant
+  useEffect(() => {
+    console.log("Selected variant changed:", selectedVariant);
+  }, [selectedVariant]);
 
   const addToCart = async () => {
     if (!checkoutId || !currentProduct) {
@@ -90,7 +113,7 @@ function PromoProductCard({ products }: PromoProductCardProps) {
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-md"
                   onMouseEnter={() => {
-                    if (currentProduct?.images?.length && currentProduct?.images?.length > 1) {
+                    if (currentProduct?.images.length && currentProduct?.images.length > 1) {
                       setCurrentImage(1)
                     }
                   }}
@@ -110,39 +133,69 @@ function PromoProductCard({ products }: PromoProductCardProps) {
 
               <div className="flex items-baseline gap-2 mb-4">
                 <p className="text-2xl text-white font-bold">€59,99</p>
-                <p className="text-lg text-gray-400 line-through">€79,98</p>
+                <p className="text-lg text-gray-400 line-through">€59,98</p>
               </div>
 
               <p className="text-white mb-4">1 Tee Bambola + 1 Tee Maleducata</p>
 
               <div className="flex flex-col gap-4">
-                <Select onValueChange={(value: "black" | "white") => setSelectedColor(value)} value={selectedColor}>
-                  <SelectTrigger className="w-[200px] bg-transparent text-white border-2 border-white">
-                    <SelectValue placeholder="Seleziona colore" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="black">Black</SelectItem>
-                    <SelectItem value="white">White</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="space-y-2">
+                  <p className="text-white text-sm">Colore Bambola</p>
+                  <Select onValueChange={(value: "black" | "white") => setBambolaColor(value)} value={bambolaColor}>
+                    <SelectTrigger className="w-[200px] bg-transparent text-white border-2 border-white">
+                      <SelectValue placeholder="Seleziona colore" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="black">Black</SelectItem>
+                      <SelectItem value="white">White</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Select value={selectedVariant} onValueChange={(value) => setSelectedVariant(value)}>
-                  <SelectTrigger className="w-[200px] bg-transparent text-white border-2 border-white">
-                    <SelectValue placeholder="Seleziona taglia" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableVariants.map((variant: Variant) => (
-                      <SelectItem key={variant.id} value={variant.id}>
-                        {variant.size}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="space-y-2">
+                  <p className="text-white text-sm">Colore Maleducata</p>
+                  <Select
+                    onValueChange={(value: "black" | "white") => setMaleducataColor(value)}
+                    value={maleducataColor}
+                  >
+                    <SelectTrigger className="w-[200px] bg-transparent text-white border-2 border-white">
+                      <SelectValue placeholder="Seleziona colore" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="black">Black</SelectItem>
+                      <SelectItem value="white">White</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                <Button className="bg-white text-[#c1272d] px-8" disabled={!selectedVariant} onClick={addToCart}>
-                  Aggiungi al carrello
-                </Button>
+                <div className="space-y-2">
+                  <p className="text-white text-sm">Taglia (uguale per entrambe)</p>
+                  <p className="text-white text-sm font-bold">Spedizione inclusa</p>
+                  <Select value={selectedVariant} onValueChange={(value) => {
+                    console.log("Selected variant:", value);
+                    setSelectedVariant(value);
+                  }}>
+                    <SelectTrigger className="w-[200px] bg-transparent text-white border-2 border-white">
+                      <SelectValue placeholder="Seleziona taglia" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableVariants.map((variant: { id: string; size: string }) => (
+                        <SelectItem key={variant.id} value={variant.id}>
+                          {variant.size}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
+
+              <Button
+                className="bg-white text-[#c1272d] px-8 w-full mt-4"
+                disabled={!selectedVariant}
+                onClick={addToCart}
+              >
+                Aggiungi al carrello
+              </Button>
             </div>
           </div>
         </div>

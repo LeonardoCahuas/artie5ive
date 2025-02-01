@@ -339,7 +339,9 @@ export async function getMultipleProducts() {
     {
       nodes(ids: [
         "gid://shopify/Product/9922998763786", 
-        "gid://shopify/Product/9922998108426"
+        "gid://shopify/Product/9922998108426",
+        "gid://shopify/Product/9923052110090", 
+        "gid://shopify/Product/9923051880714"
       ]) {
         ... on Product {
           id
