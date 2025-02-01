@@ -133,7 +133,7 @@ function PromoProductCard({ products }: PromoProductCardProps) {
 
               <div className="flex items-baseline gap-2 mb-4">
                 <p className="text-2xl text-white font-bold">€59,99</p>
-                <p className="text-lg text-gray-400 line-through">€59,98</p>
+                <p className="text-lg text-gray-400 line-through">€79,98</p>
               </div>
 
               <p className="text-white mb-4">1 Tee Bambola + 1 Tee Maleducata</p>
