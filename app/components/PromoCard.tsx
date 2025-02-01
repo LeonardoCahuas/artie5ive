@@ -109,7 +109,7 @@ function PromoProductCard({ products }: PromoProductCardProps) {
               </div>
 
               <div className="flex items-baseline gap-2 mb-4">
-                <p className="text-2xl text-white font-bold">€49,99</p>
+                <p className="text-2xl text-white font-bold">€59,99</p>
                 <p className="text-lg text-gray-400 line-through">€79,98</p>
               </div>
 
