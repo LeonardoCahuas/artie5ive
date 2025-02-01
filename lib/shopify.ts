@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Shopify GraphQL endpoint
@@ -294,4 +293,85 @@ export async function cartClear(cartId: string) {
   const cart = await cartFetch(cartId);
   const lineIds = cart.data.cart.lines.edges.map((edge: { node: { id: string; }; }) => edge.node.id);
   return cartLinesRemove(cartId, lineIds);
+}
+
+/**
+ * Fetch a single product not in collections
+ */
+export async function getSingleProduct() {
+  const query = `
+    {
+      product(id: "gid://shopify/Product/9922996306186") {
+        id
+        title
+        description
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        images(first: 10) {
+          edges {
+            node {
+              src
+            }
+          }
+        }
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              title
+              availableForSale
+            }
+          }
+        }
+      }
+    }
+  `;
+  
+  const response = await shopifyClient.post('', { query });
+  return response.data;
+}
+export async function getMultipleProducts() {
+  const query = `
+    {
+      nodes(ids: [
+        "gid://shopify/Product/9922998763786", 
+        "gid://shopify/Product/9922998108426"
+      ]) {
+        ... on Product {
+          id
+          title
+          description
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          images(first: 10) {
+            edges {
+              node {
+                src
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                availableForSale
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await shopifyClient.post("", { query });
+  return response.data.data.nodes; // Restituisce un array con i due prodotti
 }

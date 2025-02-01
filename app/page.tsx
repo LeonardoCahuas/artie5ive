@@ -6,7 +6,7 @@ import ProductCard from "./components/Card"
 import { ScrollSection } from "./components/ScrollSection"
 import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
-import { getCollections } from "@/lib/shopify"
+import { getCollections, getMultipleProducts } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
 import AlternatingCards from "./components/Cards"
 import { PhotoGallery } from "./components/PhotoGallery"
@@ -14,6 +14,7 @@ import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
 import moments from '../public/Logo 5ive moments.svg'
+import PromoProductCard from "./components/PromoCard"
 
 const metadata: Metadata = {
   title: {
@@ -60,7 +61,7 @@ const metadata: Metadata = {
   category: 'music',
 }
 
-if(metadata){}
+if (metadata) { }
 
 interface Variant {
   id: string;
@@ -92,6 +93,7 @@ export default function Home() {
   const { setProducts } = useCart()
   const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
+  const [collC, setCollC] = useState<Product[]>()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -103,7 +105,7 @@ export default function Home() {
         if (collections.length >= 2) {
           const firstCollection = collections[0].node;
           const secondCollection = collections[1].node;
-          const collectionA = firstCollection.products.edges.map((edge: { node: { id: string; title: string; variants: { edges: {node:{id:string;title: string;availableForSale: boolean}}[] }; images: { edges: {node:{src:string}}[] }; priceRange: { minVariantPrice: { amount: string } } } }) => ({
+          const collectionA = firstCollection.products.edges.map((edge: { node: { id: string; title: string; variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] }; images: { edges: { node: { src: string } }[] }; priceRange: { minVariantPrice: { amount: string } } } }) => ({
             id: edge.node.id,
             name: edge.node.title,
             variants: edge.node.variants.edges.map(variant => {
@@ -117,7 +119,7 @@ export default function Home() {
             price: parseFloat(edge.node.priceRange.minVariantPrice.amount),
           }))
 
-          const collectionB = secondCollection.products.edges.map((edge: { node: { id: string; title: string; priceRange: { minVariantPrice: { amount: string } }; variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] }; images: { edges: {node:{src:string}}[] } } }) => ({
+          const collectionB = secondCollection.products.edges.map((edge: { node: { id: string; title: string; priceRange: { minVariantPrice: { amount: string } }; variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] }; images: { edges: { node: { src: string } }[] } } }) => ({
             id: edge.node.id,
             name: edge.node.title,
             price: parseFloat(edge.node.priceRange.minVariantPrice.amount),
@@ -132,7 +134,41 @@ export default function Home() {
           setCollB(collectionB);
         }
 
-        const allProducts = collections.flatMap((collection: { node: { products: { edges: {node: {variants:{edges:{ node: { id: string; title: string; availableForSale: boolean } }[]};images:{edges:{ node: { src: string }}[]}; id:string;title:string; priceRange:{minVariantPrice:{amount:string}}}}[] } } }) =>
+        // Fetch the single product not in collections
+        //const singleProduct = singleProductResponse.data.product;
+
+        // Map the single product to the ProductCard object
+        /* const productCardData = {
+          id: singleProduct.id,
+          name: singleProduct.title,
+          price: parseFloat(singleProduct.priceRange.minVariantPrice.amount),
+          images: singleProduct.images.edges.map(image => image.node.src),
+          variants: singleProduct.variants.edges.map(variant => ({
+            id: variant.node.id,
+            size: variant.node.title,
+            available: variant.node.availableForSale,
+          })),
+        }; */
+
+
+        // Fetch multiple products
+        const multipleProd = await getMultipleProducts();
+        const mappedMultipleProducts = multipleProd.map((product: { id: string; title: string; priceRange: { minVariantPrice: { amount: string } }; images: { edges: { node: { src: string } }[] }; variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] } }) => ({
+          id: product.id,
+          name: product.title,
+          price: parseFloat(product.priceRange.minVariantPrice.amount),
+          images: product.images.edges.map((image: { node: { src: string } }) => image.node.src),
+          variants: product.variants.edges.map((variant: { node: { id: string; title: string; availableForSale: boolean } }) => ({
+            id: variant.node.id,
+            size: variant.node.title,
+            available: variant.node.availableForSale,
+          })),
+        }));
+        setCollC(mappedMultipleProducts)
+
+        console.log(mappedMultipleProducts);
+        // Add mapped multiple products to allProducts
+        const allProducts = collections.flatMap((collection: { node: { products: { edges: { node: { variants: { edges: { node: { id: string; title: string; availableForSale: boolean } }[] }; images: { edges: { node: { src: string } }[] }; id: string; title: string; priceRange: { minVariantPrice: { amount: string } } } }[] } } }) =>
           collection.node.products.edges.map(edge => ({
             id: edge.node.id,
             name: edge.node.title,
@@ -145,7 +181,11 @@ export default function Home() {
             })),
           }))
         );
-        setProducts(allProducts);
+const totProd = [...mappedMultipleProducts, ...allProducts]
+        // Add the single product and multiple products to allProducts
+        allProducts.push(...mappedMultipleProducts);
+        console.log(allProducts)
+        setProducts(totProd);
       }
     };
     fetchProducts();
@@ -160,12 +200,27 @@ export default function Home() {
           backgroundClass="bg-cover bg-center"
         >
           <div className="container w-full lg:w-[60%] px-4 py-36">
-            <motion.h2
+          <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-5xl font-bold text-white mb-8 w-full text-center"
             >
               MERCH
+            </motion.h2>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl font-bold text-white mb-8 w-full text-center mt-16"
+            >
+              PROMO BAMBOLA + MALEDUCATA
+            </motion.h2>
+            {collC && <PromoProductCard products={collC} variant={"background"}/>}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl font-bold text-white mb-8 w-full text-center mt-16"
+            >
+              TEEs
             </motion.h2>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-4 mx-auto">
               {collA.map((product, index) => (
@@ -215,7 +270,7 @@ export default function Home() {
               className="text-5xl font-bold text-white mb-12 text-center flex flex-col items-center w-full p-3"
 
             >
-              <Image src={moments} alt="%ive moments logo" width={350}/>
+              <Image src={moments} alt="%ive moments logo" width={350} />
             </motion.h2>
             <motion.div
               key={vlogVideos[0].id}

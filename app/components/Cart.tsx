@@ -90,11 +90,10 @@ export function CartSidebar() {
       <div className="border-t border-gray-200 pt-4 mt-4 flex flex-col gap-3">
         <div className="flex justify-between mb-4">
           <span className="font-semibold">Totale</span>
-          <span className="font-semibold">€{totalPrice + 10}</span>
+          <span className="font-semibold">€{totalPrice.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between mb-4">
-        <p>Spedizione: 15-30 giorni lavorativi</p>
-        <p>10€</p>
+        <div className="flex flex-col justify-between mb-4">
+        <p>Spedizione: 15-30 giorni lavorativi ed è compresa nel prezzo dell&apos;articolo</p>
         </div>
         <Button className="w-full bg-white text-red-600 border border-2 border-red-600 hover:bg-gray-100" onClick={handleClearCart}>
           Svuota Carrello
