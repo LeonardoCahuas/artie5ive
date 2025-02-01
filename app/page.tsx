@@ -8,8 +8,6 @@ import { Footer } from "./components/Footer"
 import { VideoCard } from "./components/VideoCard"
 import { getCollections, getMultipleProducts } from "@/lib/shopify"
 import BottomBadge from "./components/BootmBadge"
-import AlternatingCards from "./components/Cards"
-import { PhotoGallery } from "./components/PhotoGallery"
 import { useCart } from "@/hooks/useCart"
 import { Metadata } from "next"
 import Image from "next/image"
@@ -94,7 +92,7 @@ export default function Home() {
   const [collA, setCollA] = useState<Product[]>([])
   const [collB, setCollB] = useState<Product[]>([])
   const [collC, setCollC] = useState<Product[]>()
-
+if(collB){}
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await getCollections();
@@ -235,25 +233,6 @@ const totProd = [...mappedMultipleProducts, ...allProducts]
                 </motion.div>
               ))}
             </div>
-          </div>
-          <BottomBadge />
-        </ScrollSection>
-
-        <ScrollSection
-          backgroundImage="/bgimage2.png"
-          className="min-h-screen bg-black/50 h-full"
-          backgroundClass="bg-cover bg-center"
-        >
-          <div className="container mx-auto py-36 h-full">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-white text-center mb-16"
-            >
-              COLLAB STRIPS
-            </motion.h2>
-            <PhotoGallery />
-            <AlternatingCards products={collB} />
           </div>
           <BottomBadge />
         </ScrollSection>
