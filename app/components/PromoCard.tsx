@@ -189,13 +189,18 @@ function PromoProductCard({ products }: PromoProductCardProps) {
                 </div>
               </div>
 
-              <Button
+              {selectedVariant && <Button
                 className="bg-white text-[#c1272d] px-8 w-full mt-4"
                 disabled={!selectedVariant}
                 onClick={addToCart}
               >
                 Aggiungi al carrello
-              </Button>
+              </Button>}
+              {!selectedVariant && <p
+                className="text-white w-full mt-4 text-xl"
+              >
+                Sold out
+              </p>}
             </div>
           </div>
         </div>
